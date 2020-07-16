@@ -1,0 +1,28 @@
+.modal {
+    width: 90%;
+}
+
+@media only screen and (min-width : 601px) {
+    .modal {
+      width: 85%;
+    }
+
+}
+@media only screen and (min-width : 993px) {
+    .modal {
+      width: 70%;
+    }
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #424242;
+}

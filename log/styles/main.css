@@ -1,0 +1,90 @@
+html {
+    font-family: 'Open Sans', 'Noto Sans TC', sans-serif;
+    color: var(--primary-color);
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+nav {
+    background-color: var(--nav-bg);
+}
+
+nav .brand-logo {
+    font-weight: 800;
+    padding-left: 1rem;
+    color: var(--nav-color);
+}
+
+nav .brand-logo img.nav-logo {
+    width: 2.8rem;
+    vertical-align: sub;
+}
+
+.cards {
+    padding-top: 1rem;
+}
+
+.cards .card {
+    background-color: var(--secondary-bg);
+}
+
+.cards .card .card-title {
+    font-weight: 600;
+}
+
+.cards .card .card-content .card-title {
+    margin-bottom: 1rem !important; 
+}
+
+.cards .card .card-content .btn {
+    background-color: var(--btn-bg);
+}
+
+.cards .card .card-content .btn:nth-child(2) {
+    margin-right: .5rem;
+}
+
+.cards .card .card-content .btn:last-child {
+    margin-left: .5rem;
+}
+
+.modal {
+    height: 80% !important;
+    max-height: 80% !important;
+    background-color: var(--secondary-bg);
+}
+
+.modal-content {
+    overflow: hidden !important;
+}
+
+.modal-content h4 {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.modal-content pre {
+    margin: 0;
+    height: 0;
+}
+
+.modal-content pre code {
+    font-family: 'Roboto Mono', monospace;
+    font-size: .85rem;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    border-radius: 5px;
+    overflow: auto;
+    height: 65%;
+}
+
+.modal .modal-footer {
+    background-color: var(--secondary-bg);
+}
+
+.modal .modal-footer a{
+    color: var(--link-color);
+}

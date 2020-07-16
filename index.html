@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>C-3PO - Telegram Bot</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <style>
+        html {
+            min-height: 100vh;
+            font-family: 'Open Sans', 'Noto Sans TC', sans-serif;
+            user-select: none;
+        }
+
+        header h3{
+            font-weight: 800;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+            padding-top: 2rem;
+        }
+
+        .main-inner {
+            width: 100%;
+        }
+
+        footer {
+            padding: 1rem;
+            font-size: .8rem;
+            opacity: .8;
+        }
+
+        .bot-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .description {
+            padding: 1.2rem 0;
+        }
+
+        .card-action a {
+            margin: 0 !important;
+        }
+    </style>
+</head>
+<body class="grey darken-4 grey-text text-lighten-1 center-align">
+    <header id="top">
+        <div class="header-inner">
+            <h3>C-3PO</h3>
+        </div>
+    </header>
+	<main class="container center-align">
+		<div class="main-inner row">
+            <div class="col s12 m6 offset-m3 l4 offset-l4">
+                <div class="card grey darken-3">
+                    <div class="card-content">
+                        <div class="avatar">
+                            <a href="tg://resolve?domain=cloud_login_bot"><img class="circle" src="https://i.imgur.com/vjQGZkm.jpg" width="80%"></a>
+                        </div>
+                        <div class="bot-name"><span>C-3PO</span></div>
+                        <div class="bot-id grey-text text-darken-1">
+                            @cloud_login_bot
+                        </div>
+                        <div class="description">
+                            <span>This is a practice bot from </span><a href="//github.com/luswdev">me</a>.
+                        </div>                
+                        <div class="action">
+                            <a class="btn" href="tg://resolve?domain=cloud_login_bot">Send Message</a>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="/log" class="teal-text">Watch log</a>
+                      </div>
+                </div>
+            </div>
+		</div>
+    </main>
+    <footer>
+        <div class="footer-inner container"> 
+            <span>&copy; 2020 LuSkywalker</span>
+        </div>
+    </footer>
+</body>
+</html>
