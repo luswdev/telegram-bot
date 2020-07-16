@@ -76,7 +76,7 @@
             </pre>
         </div>
         <div class="modal-footer">
-            <a class="raw-log waves-effect waves-light btn-flat">Raw</a>
+            <a class="raw-log waves-effect waves-light btn-flat" target="_blank">Raw</a>
             <a class="download-log waves-effect waves-light btn-flat">Download</a>
             <a class="modal-close waves-effect waves-light btn-flat">OK</a>
         </div>
