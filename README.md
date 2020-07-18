@@ -2,6 +2,7 @@
 My practice telegram bot wrote by PHP.
 
 - It can `echo` what you sent.
+- Shorten URL from [is.gd](https://is.gd)
 - bot.php is my bot class, decode input into `$bot->data`.
 - Every execute will record into log file.
 
