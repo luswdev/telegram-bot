@@ -1,12 +1,71 @@
 <?php
     include_once("bot.php");
 
-    $bot = new TgBot("868385679:AAHea69gcXkC19t85sCx7BUbgFhWWCqpdQc", 460873343);
+    $bot = new TgBot("868385679:AAHea69gcXkC19t85sCx7BUbgFhWWCqpdQc", 460873343, -1001156114274);
 
-    $option = array(
-        "chat_id" => $bot->data["message"]["chat"]["id"],
-        "text" => $bot->data["message"]["text"]
-    );
-    
-    $bot->sendMessage($option);
+    $res = [];
+    $msgs = [];
+
+    if (isset($bot->data["message"]["text"])) {
+        $msgs = explode(" ", $bot->data["message"]["text"]);
+    } else {
+        $res["result"] = false;
+        $res["detail"] = "Please send message corrently.";
+    }
+
+    if (count($msgs) > 1 && $msgs[0] == 'url') {
+        if (filter_var($msgs[1], FILTER_VALIDATE_URL)) { 
+            $res = $bot->sendMessage([
+                "chat_id" => $bot->ChatID,
+                "text" => is_gd($msgs[1]),
+                "reply_to_message_id" => $bot->MsgID
+            ]);
+        } else {
+            $res =  $bot->sendMessage([
+                "chat_id" => $bot->ChatID,
+                "text" => "bad url",
+                "reply_to_message_id" => $bot->MsgID
+            ]);
+        }
+    } else if (count($msgs) > 0) {
+        switch ($msgs[0]) {
+            case "/help": {
+                $mannual = "<b>C-3PO</b>\n"
+                 . "/help Print this mannual\n"
+                 . "/myid Get your telegram id\n\n"
+                 . "Shorten URL (using is.gd):\n"
+                 . "<code>url your_link</code>\n"
+                 . "Example: \n"
+                 . "<code>url https://google.com</code>\n"
+                 . "This will output: https://is.gd/jAxBiv";
+
+                $res = $bot->sendMessage([
+                    "parse_mode" => "HTML",
+                    "chat_id" => $bot->ChatID,
+                    "text" => $mannual
+                ]);
+                break;
+            }
+            case "/myid": {
+                $res = $bot->sendMessage([
+                    "chat_id" => $bot->ChatID,
+                    "text" => $bot->ChatID
+                ]);
+                break;
+            }
+            default: {
+                $res =  $bot->sendMessage([
+                    "chat_id" => $bot->ChatID,
+                    "text" => $bot->data["message"]["text"]
+                ]);
+                break;
+            }
+        }        
+    }
+
+    echo json_encode($res, JSON_PRETTY_PRINT);
+  
+    function is_gd(string $url) : string {
+        return file_get_contents("https://is.gd/create.php?format=simple&url={$url}");
+    }
 ?>

@@ -5,6 +5,9 @@ html {
 
 body {
     background-color: var(--bg-color);
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 nav {
@@ -22,8 +25,41 @@ nav .brand-logo img.nav-logo {
     vertical-align: sub;
 }
 
-.cards {
+nav .nav-wrapper ul li a i {
+    color: var(--nav-color);
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.main-inner {
     padding-top: 1rem;
+}
+
+.switch-box {
+    width: 100%;
+}
+
+.collapsible {
+    border-color: var(--secondary-bg);
+}
+
+.collapsible .collapsible-header {
+    background-color: var(--secondary-bg);
+    border-color: var(--secondary-bg);
+}
+
+.collapsible .collapsible-body {
+    border-color: var(--secondary-bg);
+}
+
+.collapsible .collapsible-body .collapsible-row:not(:last-child) {
+    border-bottom: 1px solid var(--secondary-bg);
+}
+
+.collapsible .collapsible-body .collapsible-row .btn-flat {
+    color: var(--link-color);
 }
 
 .cards .card {
@@ -48,6 +84,12 @@ nav .brand-logo img.nav-logo {
 
 .cards .card .card-content .btn:last-child {
     margin-left: .5rem;
+}
+
+footer {
+    padding: 1rem;
+    font-size: .8rem;
+    color: var(--footer-color);
 }
 
 .modal {
