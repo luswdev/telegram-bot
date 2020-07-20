@@ -20,8 +20,10 @@
             . "<code>" . $bot->data["component_update"]["created_at"] . "</code>\n"
             . "<a href='https://www.githubstatus.com'>see more detail</a>";
     } else {
-        $res["ok"] = false;
-        $res["detail"] = "Please send message corrently.";
+        $res = array(
+            "ok" => false,
+            "detail" => "Please send message corrently."
+        );
     }
 
     if ($msg != '') {

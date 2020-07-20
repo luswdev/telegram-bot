@@ -10,26 +10,34 @@
     if (isset($bot->data["message"]["text"])) {
         $msgs = explode(" ", $bot->data["message"]["text"]);
     } else {
-        $res["ok"] = false;
-        $res["detail"] = "Please send message corrently.";
+        $res = array(
+            "ok" => false,
+            "detail" => "Please send message corrently."
+        );
     }
 
-    if (count($msgs) > 1 && $msgs[0] == 'url') {
-        if (filter_var($msgs[1], FILTER_VALIDATE_URL)) { 
-            $res = $bot->sendMessage([
-                "chat_id" => $bot->ChatID,
-                "text" => is_gd($msgs[1]),
-                "reply_to_message_id" => $bot->MsgID
-            ]);
-        } else {
-            $res =  $bot->sendMessage([
-                "chat_id" => $bot->ChatID,
-                "text" => "bad url",
-                "reply_to_message_id" => $bot->MsgID
-            ]);
-        }
-    } else if (count($msgs) > 0) {
+    if (count($msgs) > 0) {
         switch ($msgs[0]) {
+            case "url": {
+                if (count($msgs) > 1) {
+                    if (filter_var($msgs[1], FILTER_VALIDATE_URL)) { 
+                        $res = $bot->sendMessage([
+                            "chat_id" => $bot->ChatID,
+                            "text" => is_gd($msgs[1]),
+                            "reply_to_message_id" => $bot->MsgID,
+                            "disable_web_page_preview" => true
+                        ]);
+                    } else {
+                        $res =  $bot->sendMessage([
+                            "chat_id" => $bot->ChatID,
+                            "text" => "bad url",
+                            "reply_to_message_id" => $bot->MsgID
+                        ]);
+                    }
+                    break;
+                } 
+            }
+
             case "/help": {
                 $mannual = "<b>C-3PO</b>\n"
                  . "/help Print this mannual\n"
@@ -47,6 +55,7 @@
                 ]);
                 break;
             }
+
             case "/myid": {
                 $res = $bot->sendMessage([
                     "chat_id" => $bot->ChatID,
@@ -54,8 +63,9 @@
                 ]);
                 break;
             }
+
             default: {
-                $res =  $bot->sendMessage([
+                $res = $bot->sendMessage([
                     "chat_id" => $bot->ChatID,
                     "text" => $bot->data["message"]["text"]
                 ]);
@@ -63,8 +73,10 @@
             }
         }        
     } else {
-        $res["ok"] = false;
-        $res["detail"] = "Please send message corrently.";
+        $res = array(
+            "ok" => false,
+            "detail" => "Please send message corrently."
+        );
     }
 
     echo json_encode($res, JSON_PRETTY_PRINT);

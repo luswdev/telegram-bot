@@ -14,61 +14,16 @@
         $msgs = explode(" ", $bot->data["inline_query"]["query"]);
         $inline = true;
     } else {
-        $res["ok"] = false;
-        $res["detail"] = "Please send message corrently.";
+        $res = array(
+            "ok" => false,
+            "detail" => "Please send message corrently."
+        );
     }
 
-    if (count($msgs) > 1 && $msgs[0] == 'url') {
-        if (filter_var($msgs[1], FILTER_VALIDATE_URL)) { 
-            if ($inline) {
-                $res = $bot->sendInlineMessage([
-                    "inline_query_id" => $bot->MsgID,
-                    "results" => array( 
-                        array(
-                            "type" => "article",
-                            "title" => "is.gd",
-                            "description" => is_gd($msgs[1]),
-                            "input_message_content" => array(
-                                "message_text" => is_gd($msgs[1])
-                            ),
-                            "id" => time(),
-                        )
-                    )
-                ]);
-            } else {
-                $res = $bot->sendMessage([
-                    "chat_id" => $bot->ChatID,
-                    "text" => is_gd($msgs[1]),
-                    "reply_to_message_id" => $bot->MsgID
-                ]);
-            }
-        } else {
-            if ($inline) {
-                $res = $bot->sendInlineMessage([
-                    "inline_query_id" => $bot->MsgID,
-                    "results" => array(
-                        $inlineQuery = array(
-                            "type" => "article",
-                            "title" => "is.gd",
-                            "description" => "bad url",
-                            "input_message_content" => array(
-                                "message_text" => "bad url"
-                            ),
-                            "id" => time(),
-                        )
-                    )
-                ]);
-            } else {
-                $res = $bot->sendMessage([
-                    "chat_id" => $bot->ChatID,
-                    "text" => "bad url"
-                ]);
-            }
-        }
-    } else if (count($msgs) > 0) {
-        if ($inline) {
-            switch ($msgs[0]) {  
-                case "myid": {
+    if (count($msgs) > 0) {
+        switch ($msgs[0]) {
+            case "myid": {
+                if ($inline) {
                     $res = $bot->sendInlineMessage([
                         "inline_query_id" => $bot->MsgID,
                         "results" => array(
@@ -85,28 +40,31 @@
                     ]);
                     break;
                 }
+            }
 
-                default: {
+            case "url": {
+                if (count($msgs) > 1 && filter_var($msgs[1], FILTER_VALIDATE_URL) && $inline) {
                     $res = $bot->sendInlineMessage([
                         "inline_query_id" => $bot->MsgID,
-                        "results" => array(
-                            $inlineQuery = array(
+                        "results" => array( 
+                            array(
                                 "type" => "article",
-                                "title" => "Usage",
-                                "description" => "Shorten URL by is.gd: url link\nGet your id: myid",
+                                "title" => "is.gd",
+                                "description" => is_gd($msgs[1]),
                                 "input_message_content" => array(
-                                    "message_text" => "Shorten URL by is.gd: url link\nGet your id: myid"
+                                    "message_text" => is_gd($msgs[1])
                                 ),
                                 "id" => time(),
                             )
                         )
                     ]);
                     break;
-                }
-            }  
-        } else {
-            switch ($msgs[0]) {
-                case "/help": {
+                } 
+            }
+
+            case "/help":
+            default: {
+                if (!$inline) {
                     $mannual = "<b>LuSkywalker Bot</b>\n"
                     . "/help Print this mannual\n\n"
                     . "This is a Bot for inline mode:\n\n"
@@ -128,23 +86,24 @@
                         "chat_id" => $bot->ChatID,
                         "text" => $mannual
                     ]);
-                    break;
-                }
-                case "/myid": {
-                    $res = $bot->sendMessage([
-                        "chat_id" => $bot->ChatID,
-                        "text" => $bot->ChatID
+                } else {
+                    $res = $bot->sendInlineMessage([
+                        "inline_query_id" => $bot->MsgID,
+                        "results" => array(
+                            $inlineQuery = array(
+                                "type" => "article",
+                                "title" => "Usage",
+                                "description" => "Shorten URL by is.gd: url link\nGet your id: myid",
+                                "input_message_content" => array(
+                                    "message_text" => "Shorten URL by is.gd: url link\nGet your id: myid"
+                                ),
+                                "id" => time(),
+                            )
+                        )
                     ]);
-                    break;
                 }
-                default: {
-                    $res = $bot->sendMessage([
-                        "chat_id" => $bot->ChatID,
-                        "text" => $bot->data["message"]["text"]
-                    ]);
-                    break;
-                }
-            }   
+                break;
+            }
         }     
     } else if ($inline) {
         $res = $bot->sendInlineMessage([
@@ -162,8 +121,10 @@
             )
         ]);
     } else {
-        $res["ok"] = false;
-        $res["detail"] = "Please send message corrently.";
+        $res = array(
+            "ok" => false,
+            "detail" => "Please send message corrently."
+        );
     }
 
     echo json_encode($res, JSON_PRETTY_PRINT);
