@@ -1,0 +1,16 @@
+[
+    {
+        "name": "C-3PO",
+        "url": "tg://resolve?domain=cloud_login_bot",
+        "id": "cloud_login_bot",
+        "description": "This is a practice bot from <a href='//github.com/luswdev'>me</a>.",
+        "classes": ""
+    },
+    {
+        "name": "LuSkywalker Bot",
+        "url": "tg://resolve?domain=luswbot",
+        "id": "luswbot",
+        "description": "This is a inline bot, with shorten urls and get your id.",
+        "classes": ""
+    }
+]

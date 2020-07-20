@@ -71,12 +71,20 @@ class TgBot {
             $owner;
 
         /* create day directory if isn't existed */
-        if (!is_dir(dirname(__FILE__)."/log/".date("Y-m-d"))) {
-            mkdir(dirname(__FILE__)."/log/".date("Y-m-d"));
+        if (!is_dir(dirname(__FILE__)."/../log/".date("Y"))) {
+            mkdir(dirname(__FILE__)."/../log/".date("Y"));
+        }
+        
+        if (!is_dir(dirname(__FILE__)."/../log/".date("Y")."/".date("m"))) {
+            mkdir(dirname(__FILE__)."/../log/".date("Y")."/".date("m"));
+        }
+
+        if (!is_dir(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d"))) {
+            mkdir(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d"));
         }
 
         /* record input data into logfile */
-        file_put_contents(dirname(__FILE__)."/log/".date("Y-m-d")."/updated.txt",
+        file_put_contents(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d")."/updated.txt",
                         date("H:i:s ").
                         json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n\n", 
                         FILE_APPEND);
@@ -108,7 +116,7 @@ class TgBot {
         $result = json_decode($data, true);
 
         /* record execute data and result into logfile */
-        file_put_contents(dirname(__FILE__)."/log/".date("Y-m-d")."/exec.txt" , 
+        file_put_contents(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d")."/exec.txt" , 
                         $method.date( " H:i:s ")
                         .json_encode($query, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n"
                         .json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n\n\n", 
@@ -141,6 +149,27 @@ class TgBot {
         }
 
         return $this->getTelegramAPI("sendMessage", $option);
+    }
+
+    /**
+     *  @brief  Sending inline message.
+     * 
+     *  @param  $option    Sending option, see more detail from telegram bot APIs doc.
+     * 
+     *  @return $result    Sending result.
+     */
+    public function sendInlineMessage(array $option): array {
+        /* check message is empty */
+        if (!isset($option['results'])) {
+            return [];
+        } 
+
+        /* check reply id is set */
+        if (!isset($option['inline_query_id'])) {
+            return [];
+        }
+
+        return $this->getTelegramAPI("answerInlineQuery", $option);
     }
 
     /**

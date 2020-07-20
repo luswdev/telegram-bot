@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bot - Log</title>
+    <link rel="icon" type="image/png" href="/data/img/work.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/androidstudio.min.css">
+    <link rel="stylesheet" href="/styles/main.css">
+
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+</head>
+<body class="min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1 mr-0 mr-md-2">BOTs</span>
+                <div class="navbar-nav-scroll">
+                    <ul class="navbar-nav bd-navbar-nav flex-row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active">Log</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="/test/">Test</a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="navbar-nav ml-md-auto">
+                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="far fa-envelope"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github-alt"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="//www.linkedin.com/in/callum-lu" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+	<main>
+		<div class="main-inner container my-4" id="vue-main">
+            <form class="form-inline" v-on:submit.prevent="peakLog">
+                <label class="my-1 mr-2 mb-1">Select a day </label>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year">
+                    <option v-for="y in years" :value="y">{{y}}</option>
+                </select>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-month">
+                    <option v-for="m in months" :value="m">{{m}}</option>
+                </select>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-day">
+                    <option v-for="d in days" :value="d">{{d}}</option>
+                </select>
+                <button type="submit" class="btn btn-primary my-1 mb-1 mr-2" id="submit">Selected</button>
+                <button class="btn btn-secondary my-1 mb-1 mr-2" id="today" v-on:click.stop="backToday">Today</button>
+            </form>
+            <div class="card my-3" id="update">
+                <div class="card-header">
+                    Update
+                </div>
+                <div class="card-body p-0">
+                    <pre class="mb-0"><code class="json p-3" id="update-code" style="max-height: 32rem;"></code></pre>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-secondary btn-raw mr-sm-2" target="_blank" href="#">Raw</a>
+                    <a class="btn btn-primary btn-download mr-sm-2" href="#">Download</a>
+                </div>
+            </div>
+            <div class="card my-3" id="exec">
+                <div class="card-header">
+                    Execute
+                </div>
+                <div class="card-body p-0">
+                    <pre class="mb-0"><code class="json p-3" id="exec-code" style="max-height: 32rem;"></code></pre>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-secondary btn-raw" target="_blank" href="#">Raw</a>
+                    <a class="btn btn-primary btn-download" href="#">Download</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-inner container my-3 text-black-50">
+            &copy 2020 LuSkywalker 
+        </div>
+    </footer>
+    <div id="log-modal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4 id="log-title"></h4>
+            <pre>
+                <code class="json z-depth-4" id="log-body"></code>
+            </pre>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-close waves-effect waves-light btn-flat" id="raw-log" target="_blank">Raw</a>
+            <a class="modal-close waves-effect waves-light btn-flat" id="download-log">Download</a>
+            <a class="modal-close waves-effect waves-light btn-flat">OK</a>
+        </div>
+    </div>
+    <script src="/scripts/log.js"></script>
+</body>
+</html>

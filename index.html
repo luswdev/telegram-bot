@@ -1,100 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>C-3PO - Telegram Bot</title>
+    <title>Bot </title>
+    <link rel="icon" type="image/png" href="/data/img/work.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
+
     <!-- CSS -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="/styles/main.css">
+
     <!-- JavaScript -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-    <style>
-        html {
-            min-height: 100vh;
-            font-family: 'Open Sans', 'Noto Sans TC', sans-serif;
-            user-select: none;
-        }
-
-        header h3{
-            font-weight: 800;
-        }
-
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        main {
-            flex: 1 0 auto;
-            padding-top: 2rem;
-        }
-
-        .main-inner {
-            width: 100%;
-        }
-
-        footer {
-            padding: 1rem;
-            font-size: .8rem;
-            opacity: .8;
-        }
-
-        .bot-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .description {
-            padding: 1.2rem 0;
-        }
-
-        .card-action a {
-            margin: 0 !important;
-        }
-    </style>
+    <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
 </head>
-<body class="grey darken-4 grey-text text-lighten-1 center-align">
-    <header id="top">
-        <div class="header-inner">
-            <h3>C-3PO</h3>
-        </div>
+<body class="min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1 mr-0 mr-md-2">BOTs</span>
+                <div class="navbar-nav-scroll">
+                    <ul class="navbar-nav bd-navbar-nav flex-row">
+                        <li class="nav-item">
+                            <a class="nav-link active">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/log/">Log</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="/test/">Test</a>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="navbar-nav ml-md-auto">
+                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="far fa-envelope"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github-alt"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="//www.linkedin.com/in/callum-lu" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
-	<main class="container center-align">
-		<div class="main-inner row">
-            <div class="col s12 m6 offset-m3 l4 offset-l4">
-                <div class="card grey darken-3">
-                    <div class="card-content">
-                        <div class="avatar">
-                            <a href="tg://resolve?domain=cloud_login_bot"><img class="circle" src="https://i.imgur.com/vjQGZkm.jpg" width="80%"></a>
-                        </div>
-                        <div class="bot-name"><span>C-3PO</span></div>
-                        <div class="bot-id grey-text text-darken-1">
-                            @cloud_login_bot
-                        </div>
-                        <div class="description">
-                            <span>This is a practice bot from </span><a href="//github.com/luswdev">me</a>.
-                        </div>                
-                        <div class="action">
-                            <a class="btn" href="tg://resolve?domain=cloud_login_bot">Send Message</a>
+	<main>
+		<div class="main-inner container my-4">
+                <div class="card-columns" id="vue-body">
+                    <div v-for="b in bots" class="card mb-4" :id="'bot-' + b.id" v-bind:class="b.classes">
+                        <div class="card-body">
+                            <h5 class="card-title">{{b.name}}</h5>
+                            <h6 class="card-subtitle mb-2 text-black-50">@{{b.id}}</h6>
+                            <p class="card-text" v-html="b.description"></p>    
+                            <a class="btn btn-primary" :href="b.url">Send Message</a>
                         </div>
                     </div>
-                    <div class="card-action">
-                        <a href="/log" class="teal-text">Watch log</a>
-                      </div>
                 </div>
-            </div>
 		</div>
     </main>
     <footer>
-        <div class="footer-inner container"> 
-            <span>&copy; 2020 LuSkywalker</span>
+        <div class="footer-inner container my-3 text-black-50">
+            &copy 2020 LuSkywalker 
         </div>
     </footer>
+
+    <script src="/scripts/main.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@ $(document).ready( () => {
 
     $('button#clear').on('click', ()=> {
         $('#post-data')[0].value = ''
+        $('.alert-dismissible').alert('close')
     })
 
     $('button#submit').on('click', ()=> {
@@ -16,19 +17,15 @@ $(document).ready( () => {
             $('#btn-spin').toggleClass('d-none')
             
             let alert = 
-            `<div class="alert alert-warning alert-dismissible" role="alert" data-aos="fade-up">
+            `<div class="alert alert-warning alert-dismissible fade show" role="alert">
                 Please write down POST data in JSON format!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`
 
-            $('.main-inner').append(alert)
+            $('.main-inner').prepend(alert)
 
-            AOS.init({
-                duration: 700,
-                eeasing: 'ease-in-out-sine',
-            })    
             return
         }
         data = JSON.stringify(data);
@@ -42,36 +39,26 @@ $(document).ready( () => {
             $('#btn-spin').toggleClass('d-none');
 
             let alert = 
-            `<div class="alert alert-success alert-dismissible" role="alert" data-aos="fade-up">
+            `<div class="alert alert-success alert-dismissible fade show" role="alert">
                 POST to ${url} successed!
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`
 
-            $('.main-inner').append(alert)  
-
-            AOS.init({
-                duration: 700,
-                eeasing: 'ease-in-out-sine',
-            })   
+            $('.main-inner').prepend(alert)   
         }).fail(function() {
             $('#btn-spin').toggleClass('d-none')
 
             let alert = 
-            `<div class="alert alert-danger alert-dismissible" role="alert" data-aos="fade-up">
+            `<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 POST to ${url} failed, please watch log to get more information.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>`
 
-            $('.main-inner').append(alert)
-
-            AOS.init({
-                duration: 700,
-                eeasing: 'ease-in-out-sine',
-            })   
+            $('.main-inner').prepend(alert) 
         })
     })
 })
