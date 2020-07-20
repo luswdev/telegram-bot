@@ -1,7 +1,8 @@
 <?php
     include_once("bot.php");
+    $config = json_decode(file_get_contents("../data/config.json"));
 
-    $bot = new TgBot("868385679:AAHea69gcXkC19t85sCx7BUbgFhWWCqpdQc", 460873343, -1001156114274);    
+    $bot = new TgBot($config->C3PO, $config->owner, $config->debuger); 
 
     if (isset($bot->data["incident"])) {
         $msg = "<b>A incident raise or update</b>\n"

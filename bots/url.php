@@ -1,7 +1,8 @@
 <?php
     include_once("bot.php");
+    $config = json_decode(file_get_contents("../data/config.json"));
 
-    $bot = new TgBot("1394027691:AAEwrRqipqD1ls9hEB7ioS7THe37L9BW9-w", 460873343, -1001156114274);
+    $bot = new TgBot($config->lusw, $config->owner, $config->debuger);
 
     $res = [];
     $msgs = [];
