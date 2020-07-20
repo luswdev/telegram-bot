@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Bot - Log</title>
-    <link rel="icon" type="image/png" href="/data/img/work.png">
+    <title>Bot - Log</title>    
+    <link rel="icon" type="image/png" href="/images/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 
@@ -19,11 +19,11 @@
     <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
 </head>
-<body class="min-vh-100">
+<body class="min-vh-100 d-flex flex-column">
     <header>
-        <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row">
+        <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row py-3">
             <div class="container">
-                <span class="navbar-brand mb-0 h1 mr-0 mr-md-2">BOTs</span>
+                <span class="navbar-brand mb-0 h1 mr-0 mr-md-2"><i class="fas fa-database"></i> BOTs</span>
                 <div class="navbar-nav-scroll">
                     <ul class="navbar-nav bd-navbar-nav flex-row">
                         <li class="nav-item">
@@ -38,8 +38,8 @@
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-md-auto">
-                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="far fa-envelope"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github-alt"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="fas fa-envelope"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github"></i></a></li>
                     <li class="nav-item"><a class="nav-link" href="//www.linkedin.com/in/callum-lu" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
     </header>
 	<main>
 		<div class="main-inner container my-4" id="vue-main">
-            <form class="form-inline" v-on:submit.prevent="peakLog">
+            <form class="form-inline mb-4" v-on:submit.prevent="peakLog">
                 <label class="my-1 mr-2 mb-1">Select a day </label>
                 <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year">
                     <option v-for="y in years" :value="y">{{y}}</option>
@@ -58,33 +58,43 @@
                 <select class="custom-select mb-1 my-1 mr-sm-2" id="select-day">
                     <option v-for="d in days" :value="d">{{d}}</option>
                 </select>
-                <button type="submit" class="btn btn-primary my-1 mb-1 mr-2" id="submit">Selected</button>
+                <button type="submit" class="btn btn-primary my-1 mb-1 mr-2" id="submit">
+                    Selected
+                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btn-spin"></span>
+                </button>
                 <button class="btn btn-secondary my-1 mb-1 mr-2" id="today" v-on:click.stop="backToday">Today</button>
             </form>
-            <div class="card my-3" id="update">
-                <div class="card-header">
-                    Update
+            <hr>
+            <ul class="nav nav-pills mt-4" id="result-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update Log</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="exec-tab" data-toggle="tab" href="#exec" role="tab" aria-controls="exec" aria-selected="false">Execute Log</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="result-content">
+                <div class="my-3 tab-pane fade show active" id="update" role="tabpanel" aria-labelledby="update-tab">
+                    <pre class="mb-0 p-0"><code class="json p-3" id="update-code"></code></pre>
+                    <div class="m-3">
+                        <a class="btn btn-secondary btn-raw mr-sm-2" target="_blank" href="#">Raw</a>
+                        <a class="btn btn-primary btn-download mr-sm-2" href="#">
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download
+                        </a>
+                    </div>
                 </div>
-                <div class="card-body p-0">
-                    <pre class="mb-0"><code class="json p-3" id="update-code" style="max-height: 32rem;"></code></pre>
+                <div class="my-3 tab-pane" id="exec" role="tabpanel" aria-labelledby="exec-tab">
+                    <pre class="mb-0"><code class="json p-3" id="exec-code"></code></pre>
+                    <div class="m-3">
+                        <a class="btn btn-secondary btn-raw mr-sm-2" target="_blank" href="#">Raw</a>
+                        <a class="btn btn-primary btn-download mr-sm-2" href="#">
+                            <i class="fas fa-cloud-download-alt"></i>
+                            Download
+                        </a>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <a class="btn btn-secondary btn-raw mr-sm-2" target="_blank" href="#">Raw</a>
-                    <a class="btn btn-primary btn-download mr-sm-2" href="#">Download</a>
-                </div>
-            </div>
-            <div class="card my-3" id="exec">
-                <div class="card-header">
-                    Execute
-                </div>
-                <div class="card-body p-0">
-                    <pre class="mb-0"><code class="json p-3" id="exec-code" style="max-height: 32rem;"></code></pre>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-secondary btn-raw" target="_blank" href="#">Raw</a>
-                    <a class="btn btn-primary btn-download" href="#">Download</a>
-                </div>
-            </div>
+            </div>           
         </div>
     </main>
     <footer>

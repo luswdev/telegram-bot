@@ -25,6 +25,8 @@ $(document).ready( () => {
         },
         methods: {
             peakLog: function (event) {
+                $('#btn-spin').removeClass('d-none')
+
                 $('.alert').alert('close')
                 
                 $('#update pre code').empty();
@@ -47,16 +49,19 @@ $(document).ready( () => {
                         $('#update .btn-raw').attr({'href': url + '/updated.txt', 'target': '_blank'})
                         $('#update .btn-download').attr({'href': url + '/updated.txt', 'download': date + '-updated.txt'})
                         hljs.highlightBlock(document.getElementById("update-code"));
+
+                        $('#btn-spin').addClass('d-none')
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
-                        console.log(jqXHR, textStatus, errorThrown)
+                        $('#btn-spin').addClass('d-none')
+
                         let alert = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Bad Request.</strong> You selected log file (${url + '/updated.txt'}) is not exist.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>`
-                      $(".main-inner").prepend(alert);
+                            <strong>Bad Request.</strong> You selected log file (${url + '/updated.txt'}) is not exist.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`
+                        $(".main-inner").prepend(alert);
                       return
                     }
                 });
@@ -69,17 +74,20 @@ $(document).ready( () => {
                         $('#exec .btn-raw').attr({'href': url + '/exec.txt', 'target': '_blank'})
                         $('#exec .btn-download').attr({'href': url + '/exec.txt', 'download': date + '-exec.txt'})
                         hljs.highlightBlock(document.getElementById("exec-code"));
+
+                        $('#btn-spin').addClass('d-none')
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
-                        console.log(jqXHR, textStatus, errorThrown)
+                        $('#btn-spin').addClass('d-none')
+
                         let alert = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Bad Request.</strong> You selected log file (${url + '/exec.txt'})  is not exist.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>`
-                      $(".main-inner").prepend(alert);
-                      return
+                            <strong>Bad Request.</strong> You selected log file (${url + '/exec.txt'})  is not exist.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>`
+                        $(".main-inner").prepend(alert);
+                        return
                     }
                 });  
             },
