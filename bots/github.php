@@ -25,5 +25,7 @@
         "text" => $msg
     );
     
-    $bot->sendMessage($option);
+    $res = $bot->sendMessage($option);
+
+    echo json_encode($res, JSON_PRETTY_PRINT);
 ?>
