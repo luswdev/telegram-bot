@@ -14,25 +14,26 @@
         $msgs = explode(" ", $bot->data["inline_query"]["query"]);
         $inline = true;
     } else {
-        $res["result"] = false;
+        $res["ok"] = false;
         $res["detail"] = "Please send message corrently.";
     }
 
     if (count($msgs) > 1 && $msgs[0] == 'url') {
         if (filter_var($msgs[1], FILTER_VALIDATE_URL)) { 
             if ($inline) {
-                $inlineQuery = array(
-                    "type" => "article",
-                    "title" => "is.gd",
-                    "description" => is_gd($msgs[1]),
-                    "input_message_content" => array(
-                        "message_text" => is_gd($msgs[1])
-                    ),
-                    "id" => time(),
-                );
                 $res = $bot->sendInlineMessage([
                     "inline_query_id" => $bot->MsgID,
-                    "results" => array($inlineQuery)
+                    "results" => array( 
+                        array(
+                            "type" => "article",
+                            "title" => "is.gd",
+                            "description" => is_gd($msgs[1]),
+                            "input_message_content" => array(
+                                "message_text" => is_gd($msgs[1])
+                            ),
+                            "id" => time(),
+                        )
+                    )
                 ]);
             } else {
                 $res = $bot->sendMessage([
@@ -43,18 +44,19 @@
             }
         } else {
             if ($inline) {
-                $inlineQuery = array(
-                    "type" => "article",
-                    "title" => "is.gd",
-                    "description" => "bad url",
-                    "input_message_content" => array(
-                        "message_text" => "bad url"
-                    ),
-                    "id" => time(),
-                );
                 $res = $bot->sendInlineMessage([
                     "inline_query_id" => $bot->MsgID,
-                    "results" => array($inlineQuery)
+                    "results" => array(
+                        $inlineQuery = array(
+                            "type" => "article",
+                            "title" => "is.gd",
+                            "description" => "bad url",
+                            "input_message_content" => array(
+                                "message_text" => "bad url"
+                            ),
+                            "id" => time(),
+                        )
+                    )
                 ]);
             } else {
                 $res = $bot->sendMessage([
@@ -67,35 +69,37 @@
         if ($inline) {
             switch ($msgs[0]) {  
                 case "myid": {
-                    $inlineQuery = array(
-                        "type" => "article",
-                        "title" => "Your Telegram ID is:",
-                        "description" => $bot->ChatID,
-                        "input_message_content" => array(
-                            "message_text" => $bot->ChatID
-                        ),
-                        "id" => time(),
-                    );
                     $res = $bot->sendInlineMessage([
                         "inline_query_id" => $bot->MsgID,
-                        "results" => array($inlineQuery)
+                        "results" => array(
+                            $inlineQuery = array(
+                                "type" => "article",
+                                "title" => "Your Telegram ID is:",
+                                "description" => $bot->ChatID,
+                                "input_message_content" => array(
+                                    "message_text" => $bot->ChatID
+                                ),
+                                "id" => time(),
+                            )
+                        )
                     ]);
                     break;
                 }
 
                 default: {
-                    $inlineQuery = array(
-                        "type" => "article",
-                        "title" => "Usage",
-                        "description" => "Shorten URL by is.gd: url link\nGet your id: myid",
-                        "input_message_content" => array(
-                            "message_text" => "Shorten URL by is.gd: url link\nGet your id: myid"
-                        ),
-                        "id" => time(),
-                    );
                     $res = $bot->sendInlineMessage([
                         "inline_query_id" => $bot->MsgID,
-                        "results" => array($inlineQuery)
+                        "results" => array(
+                            $inlineQuery = array(
+                                "type" => "article",
+                                "title" => "Usage",
+                                "description" => "Shorten URL by is.gd: url link\nGet your id: myid",
+                                "input_message_content" => array(
+                                    "message_text" => "Shorten URL by is.gd: url link\nGet your id: myid"
+                                ),
+                                "id" => time(),
+                            )
+                        )
                     ]);
                     break;
                 }
@@ -143,19 +147,23 @@
             }   
         }     
     } else if ($inline) {
-        $inlineQuery = array(
-            "type" => "article",
-            "title" => "Usage",
-            "description" => "Shorten URL by is.gd: url link\nGet your id: myid",
-            "input_message_content" => array(
-                "message_text" => "Shorten URL by is.gd: url link\nGet your id: myid"
-            ),
-            "id" => time(),
-        );
         $res = $bot->sendInlineMessage([
             "inline_query_id" => $bot->MsgID,
-            "results" => array($inlineQuery)
+            "results" => array(
+                $inlineQuery = array(
+                    "type" => "article",
+                    "title" => "Usage",
+                    "description" => "Shorten URL by is.gd: url link\nGet your id: myid",
+                    "input_message_content" => array(
+                        "message_text" => "Shorten URL by is.gd: url link\nGet your id: myid"
+                    ),
+                    "id" => time(),
+                )
+            )
         ]);
+    } else {
+        $res["ok"] = false;
+        $res["detail"] = "Please send message corrently.";
     }
 
     echo json_encode($res, JSON_PRETTY_PRINT);

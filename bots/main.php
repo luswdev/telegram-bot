@@ -10,7 +10,7 @@
     if (isset($bot->data["message"]["text"])) {
         $msgs = explode(" ", $bot->data["message"]["text"]);
     } else {
-        $res["result"] = false;
+        $res["ok"] = false;
         $res["detail"] = "Please send message corrently.";
     }
 
@@ -62,6 +62,9 @@
                 break;
             }
         }        
+    } else {
+        $res["ok"] = false;
+        $res["detail"] = "Please send message corrently.";
     }
 
     echo json_encode($res, JSON_PRETTY_PRINT);

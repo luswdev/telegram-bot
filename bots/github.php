@@ -4,6 +4,9 @@
 
     $bot = new TgBot($config->C3PO, $config->owner, $config->debuger); 
 
+    $res = [];
+    $msg = '';
+
     if (isset($bot->data["incident"])) {
         $msg = "<b>A incident raise or update</b>\n"
             . $bot->data["incident"]["incident_updates"][0]["status"] . " - "
@@ -17,15 +20,17 @@
             . "<code>" . $bot->data["component_update"]["created_at"] . "</code>\n"
             . "<a href='https://www.githubstatus.com'>see more detail</a>";
     } else {
-        return;
+        $res["ok"] = false;
+        $res["detail"] = "Please send message corrently.";
     }
 
-    $option = array(
-        "parse_mode" => "HTML",
-        "text" => $msg
-    );
-    
-    $res = $bot->sendMessage($option);
+    if ($msg != '') {
+        $option = array(
+            "parse_mode" => "HTML",
+            "text" => $msg
+        );
+        $res = $bot->sendMessage($option);
+    }
 
     echo json_encode($res, JSON_PRETTY_PRINT);
 ?>
