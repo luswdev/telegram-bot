@@ -1,4 +1,8 @@
 $(document).ready( () => {
+    if (window.location.href.split('?').length > 1 && window.location.href.split('?')[1].split('=').length > 1 && window.location.href.split('?')[1].split('=')[0] == 'data') {
+        $('#post-data')[0].value = decodeURI(window.location.href.split('?')[1].split('=')[1])
+    }
+
     $('.alert').alert()
 
     $('button#clear').on('click', ()=> {

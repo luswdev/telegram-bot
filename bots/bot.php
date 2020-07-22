@@ -69,25 +69,25 @@ class TgBot {
             $this->data['channel_post']['message_id'] ??
             $this->data['edited_channel_post']['message_id'] ??
             $owner;
+            
+        $dbconfig = json_decode(file_get_contents("../data/config.json"));
+        $DBHOST = $dbconfig->db->host;
+        $DBUSER = $dbconfig->db->user;
+        $DBPASS = $dbconfig->db->password;
+        $DBNAME = $dbconfig->db->table;
 
-        /* create day directory if isn't existed */
-        if (!is_dir(dirname(__FILE__)."/../log/".date("Y"))) {
-            mkdir(dirname(__FILE__)."/../log/".date("Y"));
-        }
-        
-        if (!is_dir(dirname(__FILE__)."/../log/".date("Y")."/".date("m"))) {
-            mkdir(dirname(__FILE__)."/../log/".date("Y")."/".date("m"));
-        }
+        $logDay = date("Y-m-d");
+        $logTime = date("H:i:s");
+        $logData = json_encode($this->data, JSON_UNESCAPED_UNICODE);
+                
+        $mysqli = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
+        $sql = "INSERT INTO `update_log`(`day`, `time`, `payload`) VALUE(?, ?, ?)";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("sss", $logDay, $logTime, $logData);
+        $stmt->execute();
 
-        if (!is_dir(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d"))) {
-            mkdir(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d"));
-        }
-
-        /* record input data into logfile */
-        file_put_contents(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d")."/updated.txt",
-                        date("H:i:s ").
-                        json_encode($this->data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n\n", 
-                        FILE_APPEND);
+        $stmt->close();
+        $mysqli->close();
     }
 
     /**
@@ -115,12 +115,26 @@ class TgBot {
         $data = curl_exec($this->curl);
         $result = json_decode($data, true);
 
-        /* record execute data and result into logfile */
-        file_put_contents(dirname(__FILE__)."/../log/".date("Y")."/".date("m")."/".date("d")."/exec.txt" , 
-                        $method.date( " H:i:s ")
-                        .json_encode($query, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n"
-                        .json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)."\n\n\n", 
-                        FILE_APPEND);
+        $dbconfig = json_decode(file_get_contents("../data/config.json"));
+        $DBHOST = $dbconfig->db->host;
+        $DBUSER = $dbconfig->db->user;
+        $DBPASS = $dbconfig->db->password;
+        $DBNAME = $dbconfig->db->table;
+
+        $logDay = date("Y-m-d");
+        $logTime = date("H:i:s");
+        $logApi = $method;
+        $logData = json_encode($query, JSON_UNESCAPED_UNICODE);
+        $logRes = json_encode($result, JSON_UNESCAPED_UNICODE);
+                
+        $mysqli = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
+        $sql = "INSERT INTO `exec_log`(`day`, `time`, `api`, `payload`, `result`) VALUE(?, ?, ?, ?, ?)";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("sssss", $logDay, $logTime, $logApi, $logData, $logRes);
+        $stmt->execute();
+
+        $stmt->close();
+        $mysqli->close();
 
         /* sending debug message if result isn't ok */
         if (!$result['ok']) {

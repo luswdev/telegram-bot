@@ -18,6 +18,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+
 </head>
 <body class="min-vh-100 d-flex flex-column">
     <header>
@@ -46,8 +47,8 @@
         </nav>
     </header>
 	<main>
-		<div class="main-inner container my-4" id="vue-main">
-            <form class="form-inline mb-4" v-on:submit.prevent="peakLog">
+		<div class="main-inner container my-4">
+            <form class="form-inline mb-4"  id="selecter" v-on:submit.prevent="peakLog">
                 <label class="my-1 mr-2 mb-1">Select a day </label>
                 <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year">
                     <option v-for="y in years" :value="y">{{y}}</option>
@@ -62,39 +63,93 @@
                     Selected
                     <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btn-spin"></span>
                 </button>
-                <button class="btn btn-secondary my-1 mb-1 mr-2" id="today" v-on:click.stop="backToday">Today</button>
+                <button class="btn btn-secondary my-1 mb-1 mr-2" v-bind:class="{'d-none':isToday}" id="today" v-on:click.prevent="backToday">Back to Today</button>
             </form>
             <hr>
             <ul class="nav nav-pills mt-4" id="result-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="update-tab" data-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="true">Update Log</a>
+                    <a class="nav-link active" id="update-tab" data-toggle="tab" href="#update-list" role="tab" aria-controls="update" aria-selected="true">Update Log</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="exec-tab" data-toggle="tab" href="#exec" role="tab" aria-controls="exec" aria-selected="false">Execute Log</a>
+                    <a class="nav-link" id="exec-tab" data-toggle="tab" href="#exec-list" role="tab" aria-controls="exec" aria-selected="false">Execute Log</a>
                 </li>
             </ul>
             <div class="tab-content" id="result-content">
-                <div class="my-3 tab-pane fade show active" id="update" role="tabpanel" aria-labelledby="update-tab">
-                    <pre class="mb-0 p-0"><code class="json p-3" id="update-code"></code></pre>
-                    <div class="m-3">
-                        <a class="btn btn-secondary btn-raw mr-sm-2" target="_blank" href="#">Raw</a>
-                        <a class="btn btn-primary btn-download mr-sm-2" href="#">
-                            <i class="fas fa-cloud-download-alt"></i>
-                            Download
-                        </a>
+                <div class="my-3 tab-pane fade show active" id="update-list" role="tabpanel" aria-labelledby="update-tab">
+                    <div class="alert alert-success">
+                        <span>Showing rows 0 - {{update.length>0?update.length-1:update.length}} ({{update.length}} total, Query took {{sec}} seconds.)</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="r in update">
+                                    <th scope="row">{{r.id}}</th>
+                                    <td>{{day}}</td>
+                                    <td>{{r.time}}</td>
+                                    <td><a href="#"  v-on:click="open_json(r.id, 'update')"><i class="fas fa-info-circle"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="my-3 tab-pane" id="exec" role="tabpanel" aria-labelledby="exec-tab">
-                    <pre class="mb-0"><code class="json p-3" id="exec-code"></code></pre>
-                    <div class="m-3">
-                        <a class="btn btn-secondary btn-raw mr-sm-2" target="_blank" href="#">Raw</a>
-                        <a class="btn btn-primary btn-download mr-sm-2" href="#">
-                            <i class="fas fa-cloud-download-alt"></i>
-                            Download
-                        </a>
+                <div class="my-3 tab-pane" id="exec-list" role="tabpanel" aria-labelledby="exec-tab">
+                    <div class="alert alert-success">
+                        <span>Showing rows 0 - {{exec.length>0?exec.length-1:exec.length}} ({{exec.length}} total, Query took {{sec}} seconds.)</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">API</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="r in exec">
+                                    <th scope="row">{{r.id}}</th>
+                                    <td>{{day}}</td>
+                                    <td>{{r.time}}</td>
+                                    <td>{{r.api}}</td>
+                                    <td><a href="#"  v-on:click="open_json(r.id, 'exec')"><i class="fas fa-info-circle"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>           
+                <div class="d-none d-md-block text-right">
+                    <button class="btn btn-primary" v-on:click="download_log()">Download</button>
+                </div>
+            </div>      
+        </div>
+        <div class="modal fade" id="json-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-capitalize">{{title}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <pre class="mb-0 p-4 bg-dark text-light">{{result}}</pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a class="btn btn-primary" :href="'/test/?data=' + result"  v-if="title == 'update'">Test the Result</a>
+                      </div>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
@@ -102,19 +157,6 @@
             &copy 2020 LuSkywalker 
         </div>
     </footer>
-    <div id="log-modal" class="modal modal-fixed-footer">
-        <div class="modal-content">
-            <h4 id="log-title"></h4>
-            <pre>
-                <code class="json z-depth-4" id="log-body"></code>
-            </pre>
-        </div>
-        <div class="modal-footer">
-            <a class="modal-close waves-effect waves-light btn-flat" id="raw-log" target="_blank">Raw</a>
-            <a class="modal-close waves-effect waves-light btn-flat" id="download-log">Download</a>
-            <a class="modal-close waves-effect waves-light btn-flat">OK</a>
-        </div>
-    </div>
     <script src="/scripts/log.js"></script>
 </body>
 </html>
