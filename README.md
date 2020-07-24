@@ -13,4 +13,4 @@ It can subscribe [github status](https://www.githubstatus.com/) webhook notifica
 **OR** other statuspage application.
 
 ---
-You can gety bot at [here](https://tg.lusw.dev/) or via offical [t.me](https://t.me/cloud_login_bot)
+You can gety bot at [here](https://lusw.dev/tg/) or via offical [t.me](https://t.me/cloud_login_bot)
