@@ -1,21 +1,22 @@
 <?php
-    $day = isset($_GET['day']) ? $_GET['day'] : '';
+    $day = $_GET['day'] ?? null;
     $res = [];
 
-    if ($day != '') {
+    if ($day) {
         $res["Log Date"] = $day;
         $res["Download Time"] = date("Y:m:d H:i:s");
         $res["Update Log Counts"] = 0;
         $res["Execute Log Counts"] = 0;
+
         $config = json_decode(file_get_contents("../data/config.json"));
         $DBHOST = $config->db->host;
         $DBUSER = $config->db->user;
         $DBPASS = $config->db->password;
         $DBNAME = $config->db->table;
+        $conn = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
 
-        $mysqli = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
-        $sql = "SELECT * FROM `update_log` WHERE `day` = ? ORDER BY `id` DESC";
-        $stmt = $mysqli->prepare($sql);
+        $query = "SELECT * FROM `update_log` WHERE `day` = ? ORDER BY `id` DESC";
+        $stmt = $conn->prepare($query);
         $stmt->bind_param("s",$day);
         $stmt->execute();
         $stmt->bind_result($id, $day, $time, $payload);
@@ -33,8 +34,8 @@
         }
         $stmt->close();
   
-        $sql = "SELECT * FROM `exec_log` WHERE `day` = ? ORDER BY `id` DESC";
-        $stmt = $mysqli->prepare($sql);
+        $query = "SELECT * FROM `exec_log` WHERE `day` = ? ORDER BY `id` DESC";
+        $stmt = $conn->prepare($query);
         $stmt->bind_param("s",$day);
         $stmt->execute();
         $stmt->bind_result($id, $day, $time, $api, $payload, $result);
@@ -54,7 +55,7 @@
         }
         $stmt->close();
 
-        $mysqli->close();
+        $conn->close();
     } else {
         $res["ok"] = false;
         $res["message"] = "Please pick a day.";

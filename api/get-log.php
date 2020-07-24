@@ -1,8 +1,8 @@
 <?php
-    $day = isset($_POST['day']) ? $_POST['day'] : '';
+    $day = $_POST['day'] ?? null;
     $res = [];
 
-    if ($day != '') {
+    if ($day) {
         $res["ok"] = true;
         $res["message"] = "OK";
 
@@ -10,11 +10,11 @@
         $DBHOST = $config->db->host;
         $DBUSER = $config->db->user;
         $DBPASS = $config->db->password;
-        $DBNAME = $config->db->table ;
+        $DBNAME = $config->db->table;
+        $conn = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
 
-        $mysqli = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
-        $sql = "SELECT `id`, `time` FROM `update_log` WHERE `day` = ? ORDER BY `id` DESC";
-        $stmt = $mysqli->prepare($sql);
+        $query = "SELECT `id`, `time` FROM `update_log` WHERE `day` = ? ORDER BY `id` DESC";
+        $stmt = $conn->prepare($query);
         $stmt->bind_param("s",$day);
         $stmt->execute();
         $stmt->bind_result($id, $time);
@@ -28,9 +28,8 @@
         }
         $stmt->close();
 
-        $mysqli = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
-        $sql = "SELECT `id`, `time`, `api` FROM `exec_log` WHERE `day` = ? ORDER BY `id` DESC";
-        $stmt = $mysqli->prepare($sql);
+        $query = "SELECT `id`, `time`, `api` FROM `exec_log` WHERE `day` = ? ORDER BY `id` DESC";
+        $stmt = $conn->prepare($query);
         $stmt->bind_param("s",$day);
         $stmt->execute();
         $stmt->bind_result($id, $time, $api);
@@ -44,7 +43,8 @@
             );
         }
         $stmt->close();
-        $mysqli->close();
+
+        $conn->close();
     } else {
         $res["ok"] = false;
         $res["message"] = "Please pick a day.";

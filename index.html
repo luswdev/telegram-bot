@@ -1,44 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bot </title>    
-    <link rel="icon" type="image/png" href="/images/favicon.svg">
+    <title>Home | Bots</title>    
+    <link rel="icon" type="image/png" href="/tg/images/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/tg/styles/main.css">
 
     <!-- JavaScript -->
     <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
 </head>
 <body class="min-vh-100 d-flex flex-column">
-    <header>
+    <header id="vue-header">
         <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row py-3">
             <div class="container">
                 <span class="navbar-brand mb-0 h1 mr-0 mr-md-2"><i class="fas fa-database"></i> BOTs</span>
                 <div class="navbar-nav-scroll">
                     <ul class="navbar-nav bd-navbar-nav flex-row">
-                        <li class="nav-item">
-                            <a class="nav-link active">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/log/">Log</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="/test/">Test</a>
-                        </li>
+                        <nav-bar-item current="Home" name="Home" url="/tg/"></nav-bar-item>
+                        <nav-bar-item current="Home" name="Log" url="/tg/log/"></nav-bar-item>
+                        <nav-bar-item current="Home" name="Test" url="/tg/test/"></nav-bar-item>
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-md-auto">
-                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="fas fa-envelope"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//www.linkedin.com/in/callum-lu" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                    <nav-bar-link icon="fas fa-envelope" url="mailto:info@lusw.dev"></nav-bar-link>
+                    <nav-bar-link icon="fab fa-github" url="//github.com/luswdev"></nav-bar-link>
+                    <nav-bar-link icon="fab fa-linkedin-in" url="//www.linkedin.com/in/callum-lu"></nav-bar-link>
                 </ul>
             </div>
         </nav>
@@ -51,18 +45,18 @@
                             <h5 class="card-title">{{b.name}}</h5>
                             <h6 class="card-subtitle mb-2 text-black-50">@{{b.id}}</h6>
                             <p class="card-text" v-html="b.description"></p>    
-                            <a class="btn btn-primary" :href="b.url">Send Message</a>
+                            <a class="btn btn-primary btn-send" :href="b.url"><i class="fas fa-paper-plane mr-2"></i>Send Message</a>
                         </div>
                     </div>
                 </div>
 		</div>
     </main>
-    <footer>
-        <div class="footer-inner container my-3 text-black-50">
-            &copy 2020 LuSkywalker 
-        </div>
+    
+    <footer class="my-3" id="vue-footer">
+        <copyright></copyright>
     </footer>
 
-    <script src="/scripts/main.js"></script>
+    <script src="/tg/scripts/components.js"></script>
+    <script src="/tg/scripts/index.js"></script>
 </body>
 </html>

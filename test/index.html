@@ -1,87 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bot - test</title>
-    <link rel="icon" type="image/png" href="/images/favicon.svg">
+    <title>Test | Bots</title>
+    <link rel="icon" type="image/png" href="/tg/images/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/tg/styles/main.css">
 
     <!-- JavaScript -->
     <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
 </head>
 <body class="min-vh-100 d-flex flex-column">
-    <header>
+    <header id="vue-header">
         <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row py-3">
             <div class="container">
                 <span class="navbar-brand mb-0 h1 mr-0 mr-md-2"><i class="fas fa-database"></i> BOTs</span>
                 <div class="navbar-nav-scroll">
                     <ul class="navbar-nav bd-navbar-nav flex-row">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/log/">Log</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active">Test</a>
-                        </li>
+                        <nav-bar-item current="Test" name="Home" url="/tg/"></nav-bar-item>
+                        <nav-bar-item current="Test" name="Log" url="/tg/log/"></nav-bar-item>
+                        <nav-bar-item current="Test" name="Test" url="/tg/test/"></nav-bar-item>
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-md-auto">
-                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="fas fa-envelope"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//www.linkedin.com/in/callum-lu" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                    <nav-bar-link icon="fas fa-envelope" url="mailto:info@lusw.dev"></nav-bar-link>
+                    <nav-bar-link icon="fab fa-github" url="//github.com/luswdev"></nav-bar-link>
+                    <nav-bar-link icon="fab fa-linkedin-in" url="//www.linkedin.com/in/callum-lu"></nav-bar-link>
                 </ul>
-            </div>          
+            </div>
         </nav>
     </header>
-	<main>
+
+	<main id="vue-main">
 		<div class="main-inner my-4 container">
+            <bs4-alert classes="warning" title="Warning!" :shown="alertShow">
+                <p>Please write down POST data in JSON format!</p>
+            </bs4-alert>
+            <bs4-alert classes="success" title="Success!" :shown="alertShow">
+                <p>POST to {{targetUrl}} success!</p>
+                <details>
+                    <summary>Response</summary>
+                    <p><pre>{{result}}</pre></p>
+                </details>
+            </bs4-alert>
+            <bs4-alert classes="danger" :title="`${errorStatus}!`" :shown="alertShow">
+                <p>POST to {{targetUrl}} failed, please watch log to get more information.</p>
+                <details>
+                    <summary>Response</summary>
+                </details>
+            </bs4-alert>
             <div class="jumbotron">
-                <h1 class="display-4"><i class="fas fa-exclamation-circle mr-2"></i>Warning!</h1>
+                <h1 class="display-4">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    Warning!
+                </h1>
                 <p class="lead"> This is a page for developer test his/her telegram bot. Do carefully what you done here.</p>
                 <hr class="my-4">
                 <p>If you are visiting this page accidently, just go back <a href="/">here</a>.</p>
             </div>
             <form>
                 <div class="form-group">
-                    <textarea class="form-control" id="post-data" rows="15" value="{}"></textarea>
+                    <textarea class="form-control" id="post-data" rows="15" v-model="payload"></textarea>
                 </div>
             </form>
             <div class="form-row">
                 <div class="col-md-4 mb-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="location-url">https://tg.lusw.dev/bots/</span>
+                            <span class="input-group-text" id="location-url">
+                                <i class="fas fa-globe-asia mr-2"></i>
+                                https://lusw.dev/tg/bots/
+                            </span>
                         </div>
-                        <input type="text" class="form-control" id="post-location" aria-describedby="location-url" value="main.php">
+                        <input type="text" class="form-control" id="post-location" aria-describedby="location-url" v-model="targetUrl">
                     </div>
                 </div>   
-                <div class="col-md-2 offset-md-6 text-right">
-                    <button class="btn btn-primary" id="submit">
+                <div class="col-md-3 offset-md-5 text-right">
+                    <button class="btn btn-primary" id="submit" v-on:click="test_log">
+                        <i class="fas fa-rocket mr-1"></i>
                         Test
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btn-spin"></span>
+                        <span class="spinner-border spinner-border-sm" v-bind:class="{'d-none': !isSending}" role="status" aria-hidden="true"></span>
                     </button>
-                    <button class="btn btn-secondary" id="clear">
+                    <button class="btn btn-secondary" id="clear" v-on:click="clear_log">
+                        <i class="fas fa-backspace mr-1"></i>
                         Clear
                     </button>
                 </div>       
             </div>
         </div>
     </main>
-    <footer class="my-3">
-        <div class="footer-inner container text-black-50">
-            &copy; 2020 LuSkywalker
-        </div>
+
+    <footer class="my-3" id="vue-footer">
+        <copyright></copyright>
     </footer>
 
-    <script src="/scripts/test.js"></script>
+    <script src="/tg/scripts/components.js"></script>
+    <script src="/tg/scripts/bot-test.js"></script>
 </body>
 </html>

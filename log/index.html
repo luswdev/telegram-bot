@@ -1,69 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Bot - Log</title>    
-    <link rel="icon" type="image/png" href="/images/favicon.svg">
+    <title>Log | Bots</title>    
+    <link rel="icon" type="image/png" href="/tg/images/favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.0/css/all.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/androidstudio.min.css">
-    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/tg/styles/main.css">
 
     <!-- JavaScript -->
     <script src="//cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
-
+    <script src="//cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"></script>
 </head>
 <body class="min-vh-100 d-flex flex-column">
-    <header>
+    <header id="vue-header">
         <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row py-3">
             <div class="container">
                 <span class="navbar-brand mb-0 h1 mr-0 mr-md-2"><i class="fas fa-database"></i> BOTs</span>
                 <div class="navbar-nav-scroll">
                     <ul class="navbar-nav bd-navbar-nav flex-row">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active">Log</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="/test/">Test</a>
-                        </li>
+                        <nav-bar-item current="Log" name="Home" url="/tg/"></nav-bar-item>
+                        <nav-bar-item current="Log" name="Log" url="/tg/log/"></nav-bar-item>
+                        <nav-bar-item current="Log" name="Test" url="/tg/test/"></nav-bar-item>
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-md-auto">
-                    <li class="nav-item"><a class="nav-link" href="mailto:info@lusw.dev" target="_blank"><i class="fas fa-envelope"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//github.com/luswdev" target="_blank"><i class="fab fa-github"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="//www.linkedin.com/in/callum-lu" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                    <nav-bar-link icon="fas fa-envelope" url="mailto:info@lusw.dev"></nav-bar-link>
+                    <nav-bar-link icon="fab fa-github" url="//github.com/luswdev"></nav-bar-link>
+                    <nav-bar-link icon="fab fa-linkedin-in" url="//www.linkedin.com/in/callum-lu"></nav-bar-link>
                 </ul>
             </div>
         </nav>
     </header>
+
 	<main>
 		<div class="main-inner container my-4">
             <form class="form-inline mb-4"  id="selecter" v-on:submit.prevent="peakLog">
                 <label class="my-1 mr-2 mb-1">Select a day </label>
-                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year">
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year" v-on:change="getDay">
                     <option v-for="y in years" :value="y">{{y}}</option>
                 </select>
-                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-month">
-                    <option v-for="m in months" :value="m">{{m}}</option>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-month" v-on:change="getDay">
+                    <option v-for="(m, i) in months" :value="i+1">{{m}}</option>
                 </select>
                 <select class="custom-select mb-1 my-1 mr-sm-2" id="select-day">
                     <option v-for="d in days" :value="d">{{d}}</option>
                 </select>
                 <button type="submit" class="btn btn-primary my-1 mb-1 mr-2" id="submit">
+                    <i class="fas fa-calendar-check mr-1"></i>
                     Selected
-                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="btn-spin"></span>
+                    <span class="spinner-border spinner-border-sm" v-bind:class="{'d-none': working}" role="status" aria-hidden="true" id="btn-spin"></span>
                 </button>
-                <button class="btn btn-secondary my-1 mb-1 mr-2" v-bind:class="{'d-none':isToday}" id="today" v-on:click.prevent="backToday">Back to Today</button>
+                <button class="btn btn-secondary my-1 mb-1 mr-2" v-bind:class="{'d-none': isToday}" id="today" v-on:click.prevent="backToday">Back to Today</button>
             </form>
             <hr>
             <ul class="nav nav-pills mt-4" id="result-tab" role="tablist">
@@ -75,60 +71,13 @@
                 </li>
             </ul>
             <div class="tab-content" id="result-content">
-                <div class="my-3 tab-pane fade show active" id="update-list" role="tabpanel" aria-labelledby="update-tab">
-                    <div class="alert alert-success">
-                        <span>Showing rows 0 - {{update.length>0?update.length-1:update.length}} ({{update.length}} total, Query took {{sec}} seconds.)</span>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="r in update">
-                                    <th scope="row">{{r.id}}</th>
-                                    <td>{{day}}</td>
-                                    <td>{{r.time}}</td>
-                                    <td><a href="#"  v-on:click="open_json(r.id, 'update')"><i class="fas fa-info-circle"></i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="my-3 tab-pane" id="exec-list" role="tabpanel" aria-labelledby="exec-tab">
-                    <div class="alert alert-success">
-                        <span>Showing rows 0 - {{exec.length>0?exec.length-1:exec.length}} ({{exec.length}} total, Query took {{sec}} seconds.)</span>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Time</th>
-                                    <th scope="col">API</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="r in exec">
-                                    <th scope="row">{{r.id}}</th>
-                                    <td>{{day}}</td>
-                                    <td>{{r.time}}</td>
-                                    <td>{{r.api}}</td>
-                                    <td><a href="#"  v-on:click="open_json(r.id, 'exec')"><i class="fas fa-info-circle"></i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <log-tab title="update" v-bind:logs="update" v-bind:sec="sec" v-bind:day="day" @get-log="openJson"></log-tab>
+                <log-tab title="exec" v-bind:logs="exec" v-bind:sec="sec" v-bind:day="day" @get-log="openJson"></log-tab>
                 <div class="d-none d-md-block text-right">
-                    <button class="btn btn-primary" v-on:click="download_log()">Download</button>
+                    <button class="btn btn-primary" v-on:click="download_log()">
+                        <i class="fas fa-save mr-2"></i>
+                        Download
+                    </button>
                 </div>
             </div>      
         </div>
@@ -138,25 +87,32 @@
                     <div class="modal-header">
                         <h5 class="modal-title text-capitalize">{{title}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body p-0">
                         <pre class="mb-0 p-4 bg-dark text-light">{{result}}</pre>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a class="btn btn-primary" :href="'/test/?data=' + result"  v-if="title == 'update'">Test the Result</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            <i class="fas fa-times-circle"></i>
+                            Close
+                        </button>
+                        <a class="btn btn-primary" :href="'/tg/test/?uid=' + id"  v-if="type == 'update'">
+                            <i class="fas fa-rocket mr-1"></i>
+                            Test the Result
+                        </a>
                       </div>
                 </div>
             </div>
         </div>
     </main>
-    <footer>
-        <div class="footer-inner container my-3 text-black-50">
-            &copy 2020 LuSkywalker 
-        </div>
+
+    <footer class="my-3" id="vue-footer">
+        <copyright></copyright>
     </footer>
-    <script src="/scripts/log.js"></script>
+
+    <script src="/tg/scripts/components.js"></script>
+    <script src="/tg/scripts/bot-log.js"></script>
 </body>
 </html>

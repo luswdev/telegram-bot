@@ -1,9 +1,9 @@
 <?php
-    $type = isset($_POST['type']) ? $_POST['type'] : '';
-    $id   = isset($_POST['id'])   ? $_POST['id']   : -1;
+    $type = $_POST['type'] ?? null;
+    $id   = $_POST['id'] ?? -1;
     $res  = [];
 
-    if ($type != '' && $id > 0) {
+    if ($type && $id > 0) {
         $res["ok"] = true;
         $res["message"] = "OK";
 
@@ -15,12 +15,12 @@
         $DBUSER = $config->db->user;
         $DBPASS = $config->db->password;
         $DBNAME = $config->db->table;
-        $mysqli = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
+        $conn = new mysqli($DBHOST, $DBUSER, $DBPASS, $DBNAME);
 
         switch ($type) {
             case 'update': {
-                $sql = "SELECT `time`, `payload` FROM `update_log` WHERE `id` = ?";
-                $stmt = $mysqli->prepare($sql);
+                $query = "SELECT `time`, `payload` FROM `update_log` WHERE `id` = ?";
+                $stmt = $conn->prepare($query);
                 $stmt->bind_param("i",$id);
                 $stmt->execute();
                 $stmt->bind_result($time, $payload);
@@ -32,8 +32,8 @@
             break;
             }
             case 'exec': {
-                $sql = "SELECT `time`, `payload`, `result` FROM `exec_log` WHERE `id` = ?";
-                $stmt = $mysqli->prepare($sql);
+                $query = "SELECT `time`, `payload`, `result` FROM `exec_log` WHERE `id` = ?";
+                $stmt = $conn->prepare($query);
                 $stmt->bind_param("i",$id);
                 $stmt->execute();
                 $stmt->bind_result($time, $payload, $result);
@@ -52,7 +52,7 @@
             }
         }
 
-        $mysqli->close();
+        $conn->close();
 
     } else {
         $res["ok"] = false;

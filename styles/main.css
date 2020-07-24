@@ -23,6 +23,10 @@ pre {
     font-size: .8rem;
 }
 
+.btn-send i{
+    transform: rotate(15deg);
+}
+
 
 @media (min-width: 576px) { 
     .card-columns {
