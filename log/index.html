@@ -19,11 +19,13 @@
     <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/lodash@4.17.19/lodash.min.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script> 
+
 </head>
 <body class="min-vh-100 d-flex flex-column">
     <header id="vue-header">
-        <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row py-3">
-            <div class="container">
+        <nav class="navbar navbar-expand navbar-dark py-3 fixed-top">
+            <div class="container flex-column flex-md-row ">
                 <span class="navbar-brand mb-0 h1 mr-0 mr-md-2"><i class="fas fa-database"></i> BOTs</span>
                 <div class="navbar-nav-scroll">
                     <ul class="navbar-nav bd-navbar-nav flex-row">
@@ -41,24 +43,21 @@
         </nav>
     </header>
 
-	<main>
+	<main id="vue-main">
 		<div class="main-inner container my-4">
-            <form class="form-inline mb-4"  id="selecter" v-on:submit.prevent="peakLog">
-                <label class="my-1 mr-2 mb-1">Select a day </label>
-                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year" v-on:change="getDay">
-                    <option v-for="y in years" :value="y">{{y}}</option>
+            <form class="form-inline mb-4"  id="selecter" v-on:change.prevent="peakLog">
+                <label class="my-1 mr-2 mb-1">
+                    Select a day 
+                </label>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-year" v-on:change="getDay" v-model="selecting.year">
+                    <option v-for="y in selecter.years" :value="y">{{y}}</option>
                 </select>
-                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-month" v-on:change="getDay">
-                    <option v-for="(m, i) in months" :value="i+1">{{m}}</option>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-month" v-on:change="getDay" v-model="selecting.month">
+                    <option v-for="(m, i) in selecter.months" :value="i+1">{{m}}</option>
                 </select>
-                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-day">
-                    <option v-for="d in days" :value="d">{{d}}</option>
+                <select class="custom-select mb-1 my-1 mr-sm-2" id="select-day" v-model="selecting.day">
+                    <option v-for="d in selecter.days" :value="d">{{d}}</option>
                 </select>
-                <button type="submit" class="btn btn-primary my-1 mb-1 mr-2" id="submit">
-                    <i class="fas fa-calendar-check mr-1"></i>
-                    Selected
-                    <span class="spinner-border spinner-border-sm" v-bind:class="{'d-none': working}" role="status" aria-hidden="true" id="btn-spin"></span>
-                </button>
                 <button class="btn btn-secondary my-1 mb-1 mr-2" v-bind:class="{'d-none': isToday}" id="today" v-on:click.prevent="backToday">Back to Today</button>
             </form>
             <hr>
@@ -74,7 +73,7 @@
                 <log-tab title="update" v-bind:logs="update" v-bind:sec="sec" v-bind:day="day" @get-log="openJson"></log-tab>
                 <log-tab title="exec" v-bind:logs="exec" v-bind:sec="sec" v-bind:day="day" @get-log="openJson"></log-tab>
                 <div class="d-none d-md-block text-right">
-                    <button class="btn btn-primary" v-on:click="download_log()">
+                    <button class="btn btn-styled" v-on:click="download_log()">
                         <i class="fas fa-save mr-2"></i>
                         Download
                     </button>
@@ -91,14 +90,14 @@
                         </button>
                     </div>
                     <div class="modal-body p-0">
-                        <pre class="mb-0 p-4 bg-dark text-light">{{result}}</pre>
+                        <pre class="m-0"><code class="mb-0 p-4 json hljs" v-html="result"></code></pre>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             <i class="fas fa-times-circle"></i>
                             Close
                         </button>
-                        <a class="btn btn-primary" :href="'/tg/test/?uid=' + id"  v-if="type == 'update'">
+                        <a class="btn btn-styled" :href="'/tg/test/?uid=' + id"  v-if="type == 'update'">
                             <i class="fas fa-rocket mr-1"></i>
                             Test the Result
                         </a>
@@ -110,9 +109,14 @@
 
     <footer class="my-3" id="vue-footer">
         <copyright></copyright>
+        <b2t></b2t>
     </footer>
 
-    <script src="/tg/scripts/components.js"></script>
+    <div class="d-none" id="render-block">
+        <pre><code class="json"></code></pre>
+    </div>
+
+    <script src="/tg/scripts/render.js"></script>
     <script src="/tg/scripts/bot-log.js"></script>
 </body>
 </html>

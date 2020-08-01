@@ -16,11 +16,13 @@
     <script src="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/http-vue-loader"></script>
+
 </head>
 <body class="min-vh-100 d-flex flex-column">
     <header id="vue-header">
-        <nav class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row py-3">
-            <div class="container">
+        <nav class="navbar navbar-expand navbar-dark py-3 fixed-top">
+            <div class="container flex-column flex-md-row">
                 <span class="navbar-brand mb-0 h1 mr-0 mr-md-2"><i class="fas fa-database"></i> BOTs</span>
                 <div class="navbar-nav-scroll">
                     <ul class="navbar-nav bd-navbar-nav flex-row">
@@ -39,24 +41,25 @@
     </header>
 	<main>
 		<div class="main-inner container my-4">
-                <div class="card-columns" id="vue-body">
-                    <div v-for="b in bots" class="card mb-4" :id="'bot-' + b.id" v-bind:class="b.classes">
-                        <div class="card-body">
-                            <h5 class="card-title">{{b.name}}</h5>
-                            <h6 class="card-subtitle mb-2 text-black-50">@{{b.id}}</h6>
-                            <p class="card-text" v-html="b.description"></p>    
-                            <a class="btn btn-primary btn-send" :href="b.url"><i class="fas fa-paper-plane mr-2"></i>Send Message</a>
-                        </div>
+            <div class="card-columns" v-bind:class="{'d-none': rendered}" id="vue-body">
+                <div v-for="b in bots" class="card mb-4" :id="'bot-' + b.id" v-bind:class="b.classes">
+                    <div class="card-body">
+                        <h5 class="card-title">{{b.name}}</h5>
+                        <h6 class="card-subtitle mb-2 text-black-50">@{{b.id}}</h6>
+                        <p class="card-text" v-html="b.description"></p>    
+                        <a class="btn btn-styled btn-send" :href="b.url"><i class="fas fa-paper-plane mr-2"></i>Send Message</a>
                     </div>
                 </div>
+            </div>
 		</div>
     </main>
     
     <footer class="my-3" id="vue-footer">
         <copyright></copyright>
+        <b2t></b2t>
     </footer>
 
-    <script src="/tg/scripts/components.js"></script>
+    <script src="/tg/scripts/render.js"></script>
     <script src="/tg/scripts/index.js"></script>
 </body>
 </html>

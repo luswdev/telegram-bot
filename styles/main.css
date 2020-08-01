@@ -8,25 +8,74 @@ header .navbar-brand {
     font-weight: 800;
 }
 
+nav {
+    background-color: #1abc9c;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #1abc9c;
+}
+
+.nav-pills a {
+    color: #1abc9c;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.7);
+}
+
 main {
     flex: 1 0 auto;
+    margin-top: 152px;
 }
 
 footer {
     font-size: .8rem;
 }
 
-pre {
+pre code {
     font-family: 'Roboto Mono', monospace;
     tab-size: 4;
     min-height: 30vh;
     font-size: .8rem;
 }
 
+.text-styled {
+    color: #1abc9c;
+}
+
+.btn-styled {
+    color: #fff;
+    background-color: #1abc9c;
+    border-color: #1abc9c;
+}
+
+.btn-styled:hover {
+    color: #fff;
+    background-color: #16a085;
+    border-color: #16a085;
+}
+
+.btn-styled:focus {
+    color: #fff;
+    background-color: #16a085;
+    border-color: #16a085;
+    box-shadow: 0 0 0 0.2rem rgba(22,160,133 ,.5);
+}
+
 .btn-send i{
     transform: rotate(15deg);
 }
 
+.alert-styled {
+    color: #0e6252;
+    background-color: #dbfaf4;
+    border-color: #c5f7ed;
+}
+
+#back-to-top-btn-box {
+    transition: bottom .3s ease;
+}
 
 @media (min-width: 576px) { 
     .card-columns {
@@ -37,5 +86,11 @@ pre {
 @media (min-width: 992px) { 
     .card-columns {
         column-count: 3;
+    }
+}
+
+@media (min-width: 768px) {
+    main {
+        margin-top: 72px;
     }
 }

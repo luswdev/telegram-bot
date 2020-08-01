@@ -26,7 +26,7 @@
                 $stmt->bind_result($time, $payload);
                 if ($stmt->fetch()) {
                     $res["time"] = $time;
-                    $res["payload"] = json_decode($payload, JSON_PRETTY_PRINT);
+                    $res["payload"][] = json_decode($payload, JSON_PRETTY_PRINT);
                 }
                 $stmt->close();
             break;
@@ -38,9 +38,10 @@
                 $stmt->execute();
                 $stmt->bind_result($time, $payload, $result);
                 if ($stmt->fetch()) {
+
                     $res["time"] = $time;
-                    $res["payload"] = json_decode($payload, JSON_PRETTY_PRINT);
-                    $res["result"] = json_decode($result, JSON_PRETTY_PRINT);
+                    $res["payload"][] = json_decode($payload, JSON_PRETTY_PRINT);
+                    $res["payload"][] = json_decode($result, JSON_PRETTY_PRINT);
                 }
                 $stmt->close();
             break;

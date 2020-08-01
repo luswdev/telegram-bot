@@ -1,11 +1,16 @@
-$(document).ready( () => {
-    $.getJSON(`/tg/data/bots.json?nocache=${new Date()}`)
-    .done( (json) => {
+$.ajax({
+    dataType: 'json',
+    url: `/tg/data/bots.json?nocache=${new Date()}`,
+    success: (json) => {
         new Vue({
             el: '#vue-body',
             data: {
-                bots: json
+                bots: json, 
+                rendered: true
+            },
+            mounted: function () {
+                this.rendered = false
             }
         })
-    })
-});
+    }
+})
