@@ -1,0 +1,13 @@
+.tab-pane {
+    .card-styled {
+        color: mix($black, $styled-color, abs($alert-color-level) * $theme-color-interval);
+        background-color: mix($white, $styled-color, abs($alert-bg-level) * $theme-color-interval);
+        border-color: mix($white, $styled-color, abs($alert-border-level) * $theme-color-interval);
+    }
+    
+    .text-styled {
+        color: $styled-color;
+    }
+}
+
+

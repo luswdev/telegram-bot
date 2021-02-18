@@ -1,0 +1,13 @@
+{
+    "C3PO": "868385679:AAHea69gcXkC19t85sCx7BUbgFhWWCqpdQc",
+    "lusw": "1394027691:AAEwrRqipqD1ls9hEB7ioS7THe37L9BW9-w",
+    "debuger": -1001156114274,
+    "owner": 460873343,
+    "db": {
+        "host": "localhost",
+        "user": "root",
+        "password": "Callum@1996",
+        "table": "bot_log"
+    },
+    "secret": "XJKMFQWYQSQWRK4H"
+}

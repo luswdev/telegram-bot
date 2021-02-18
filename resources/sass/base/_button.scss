@@ -1,0 +1,31 @@
+.btn-styled {
+    color: $white;
+    background-color: $styled-color;
+    border-color: $styled-color;
+
+    &:hover {
+        color: $white;
+        background-color: darken($styled-color, 7.5%);
+        border-color: darken($styled-color, 10%);
+    }
+
+    &:focus {
+        color: $white;
+        background-color: darken($styled-color, 7.5%);
+        border-color: darken($styled-color, 10%);
+        box-shadow: 0 0 0 $btn-focus-width rgba(mix($styled-color, $styled-color, 15%), .5);
+    }
+}
+
+#back-to-top-btn-box {
+    transition: bottom .3s ease;
+
+    button {
+        width: 60px;
+        height: 60px;
+
+        i {
+            font-size: 2rem;
+        }
+    }
+}
